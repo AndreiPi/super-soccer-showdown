@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Super Soccer Showdown local Lambda REST API
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 20
+    MemorySize: 256
+    Environment:
+      Variables:
+        POKEAPI_BASE_URL: !Sub "${PokeApiBaseUrl}"
+        SWAPI_BASE_URL: !Sub "${SwapiBaseUrl}"
+
+Parameters:
+  PokeApiBaseUrl:
+    Type: String
+    Default: https://pokeapi.co/api/v2/pokemon
+  SwapiBaseUrl:
+    Type: String
+    Default: https://swapi.dev/api/people
+
+Resources:
+  GenerateUniverseTeamFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.generate_universe_team_handler
+      CodeUri: src/
+      Events:
+        GetUniverseTeam:
+          Type: Api
+          Properties:
+            Path: /teams/{universe}
+            Method: get
+
+  GenerateShowdownFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.generate_showdown_handler
+      CodeUri: src/
+      Events:
+        PostShowdown:
+          Type: Api
+          Properties:
+            Path: /showdown
+            Method: post
+
+  ShowdownQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: showdown-queue
+
+  ProcessShowdownQueueFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_sqs.handlers.process_showdown_queue_handler
+      CodeUri: src/
+      Environment:
+        Variables:
+          SQS_ENDPOINT_URL: http://localstack:4566
+      Events:
+        ShowdownQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ShowdownQueue.Arn
+            BatchSize: 1
