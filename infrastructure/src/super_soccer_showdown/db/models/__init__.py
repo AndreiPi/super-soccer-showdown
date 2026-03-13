@@ -1,6 +1,7 @@
 from super_soccer_showdown.db.models.enums import PositionEnum, UniverseEnum
 from super_soccer_showdown.db.models.pokemon_data import PokemonData
 from super_soccer_showdown.db.models.pokemon_team_composition import PokemonTeamComposition
+from super_soccer_showdown.db.models.showdown_action import ShowdownAction
 from super_soccer_showdown.db.models.soccer_match import SoccerMatch
 from super_soccer_showdown.db.models.soccer_team import SoccerTeam
 from super_soccer_showdown.db.models.starwars_data import StarWarsData
@@ -15,6 +16,7 @@ __all__ = [
     "PokemonData",
     "SoccerTeam",
     "SoccerMatch",
+    "ShowdownAction",
     "StarWarsTeamComposition",
     "PokemonTeamComposition",
 ]

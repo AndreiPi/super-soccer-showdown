@@ -5,12 +5,19 @@ Description: Super Soccer Showdown local Lambda REST API
 Globals:
   Function:
     Runtime: python3.12
-    Timeout: 20
+    Timeout: 60
     MemorySize: 256
     Environment:
       Variables:
         POKEAPI_BASE_URL: !Sub "${PokeApiBaseUrl}"
         SWAPI_BASE_URL: !Sub "${SwapiBaseUrl}"
+        JWT_SECRET_KEY: !Sub "${JWTSecretKey}"
+        DB_USER: !Sub "${DBUser}"
+        DB_PASSWORD: !Sub "${DBPassword}"
+        DB_HOST: !Sub "${DBHost}"
+        DB_PORT: !Sub "${DBPort}"
+        DB_NAME: !Sub "${DBName}"
+
 
 Parameters:
   PokeApiBaseUrl:
@@ -19,24 +26,54 @@ Parameters:
   SwapiBaseUrl:
     Type: String
     Default: https://swapi.dev/api/people
+  JWTSecretKey:
+    Type: String
+    Default: my-secret-key
+  DBUser:
+    Type: String
+    Default: postgres
+  DBPassword:
+    Type: String
+    Default: postgres
+  DBHost:
+    Type: String
+    Default: postgres
+  DBPort:
+    Type: String
+    Default: 5432
+  DBName:
+    Type: String
+    Default: super_soccer_showdown
 
 Resources:
   GenerateUniverseTeamFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.generate_universe_team_handler
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.team_handlers.generate_universe_team_handler
       CodeUri: src/
       Events:
-        GetUniverseTeam:
+        PostUniverseTeam:
           Type: Api
           Properties:
             Path: /teams/{universe}
+            Method: post
+
+  ListTeamsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.team_handlers.list_teams_handler
+      CodeUri: src/
+      Events:
+        GetTeams:
+          Type: Api
+          Properties:
+            Path: /teams
             Method: get
 
   GenerateShowdownFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.generate_showdown_handler
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.matches_handlers.generate_showdown_handler
       CodeUri: src/
       Events:
         PostShowdown:
@@ -45,22 +82,52 @@ Resources:
             Path: /showdown
             Method: post
 
-  ShowdownQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: showdown-queue
-
-  ProcessShowdownQueueFunction:
+  ListMatchesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: super_soccer_showdown.entrypoints.lambda_sqs.handlers.process_showdown_queue_handler
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.matches_handlers.list_matches_handler
       CodeUri: src/
-      Environment:
-        Variables:
-          SQS_ENDPOINT_URL: http://localstack:4566
       Events:
-        ShowdownQueueEvent:
-          Type: SQS
+        GetMatches:
+          Type: Api
           Properties:
-            Queue: !GetAtt ShowdownQueue.Arn
-            BatchSize: 1
+            Path: /matches
+            Method: get
+
+  PlayerSyncFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.player_handlers.player_handler
+      CodeUri: src/
+      Events:
+        GetPlayersSync:
+          Type: Api
+          Properties:
+            Path: /players/sync
+            Method: get
+
+  RegisterUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.user_handlers.register_user_handler
+      CodeUri: src/
+      Events:
+        PostRegister:
+          Type: Api
+          Properties:
+            Path: /users/register
+            Method: post
+
+  RefreshJwtTokenFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.user_handlers.refresh_jwt_token_handler
+      CodeUri: src/
+      Events:
+        GetRefreshToken:
+          Type: Api
+          Properties:
+            Path: /users/token/refresh/{user_id}
+            Method: get
+
+

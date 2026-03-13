@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class UniverseEnum(str, Enum):
+class UniverseEnum(Enum):
     STARWARS = "starwars"
     POKEMON = "pokemon"
 
 
-class PositionEnum(str, Enum):
+class PositionEnum(Enum):
     GOALIE = "Goalie"
     DEFENCE = "Defence"
     OFFENCE = "Offence"

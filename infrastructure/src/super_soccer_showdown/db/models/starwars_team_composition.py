@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import sqlalchemy as sa
+from typing import TYPE_CHECKING
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from super_soccer_showdown.db.base import Base
 from super_soccer_showdown.db.models.enums import PositionEnum
+
+if TYPE_CHECKING:
+    from super_soccer_showdown.db.models.soccer_team import SoccerTeam
+    from super_soccer_showdown.db.models.starwars_data import StarWarsData
 
 
 class StarWarsTeamComposition(Base):
@@ -12,8 +17,15 @@ class StarWarsTeamComposition(Base):
 
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True, autoincrement=True)
     team_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey("soccer_team.id"), nullable=False)
-    player_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey("starwars_data.id"), nullable=False)
-    position: Mapped[PositionEnum] = mapped_column(sa.Enum(PositionEnum), nullable=False)
+    player_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey("starwars_data.swapi_id"), nullable=False)
+    position: Mapped[PositionEnum] = mapped_column(
+        sa.Enum(
+            PositionEnum,
+            name="positionenum",
+            values_callable=lambda enum_cls: [member.value for member in enum_cls],
+        ),
+        nullable=False,
+    )
 
     team: Mapped["SoccerTeam"] = relationship("SoccerTeam", back_populates="starwars_players")
     player: Mapped["StarWarsData"] = relationship("StarWarsData", back_populates="team_participation")

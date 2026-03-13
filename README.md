@@ -35,9 +35,24 @@ All backend code is under `infrastructure/src/super_soccer_showdown`:
 
 ## API Endpoints
 
-### 1) Generate One Universe Team
+### 1) List Teams (Paginated)
 
-- `GET /teams/{universe}`
+- `GET /teams`
+- Query params:
+- `page` (default `1`)
+- `page_size` (default `10`, max `100`)
+- `universe` (optional: `starwars` or `pokemon`)
+- `user_id` (optional integer)
+
+Example:
+
+```bash
+curl "http://127.0.0.1:3000/teams?page=1&page_size=10&universe=starwars&user_id=1"
+```
+
+### 2) Generate One Universe Team
+
+- `POST /teams/{universe}`
 - `universe` values: `starwars`, `pokemon`
 - Optional query params:
 - `defenders` (default `2`)
@@ -46,10 +61,10 @@ All backend code is under `infrastructure/src/super_soccer_showdown`:
 Example:
 
 ```bash
-curl "http://127.0.0.1:3000/teams/starwars?defenders=3&attackers=1"
+curl -X POST "http://127.0.0.1:3000/teams/starwars?defenders=3&attackers=1"
 ```
 
-### 2) Generate Full Showdown (Both Teams)
+### 3) Generate Full Showdown (Both Teams)
 
 - `POST /showdown`
 - Optional JSON body:
@@ -67,6 +82,31 @@ Example:
 curl -X POST "http://127.0.0.1:3000/showdown" \
 	-H "Content-Type: application/json" \
 	-d '{"starwars":{"defenders":2,"attackers":2},"pokemon":{"defenders":1,"attackers":3}}'
+```
+
+### 4) List Matches (Paginated)
+
+- `GET /matches`
+- Query params:
+- `page` (default `1`)
+- `page_size` (default `10`, max `100`)
+- `user_id` (optional integer; matches where the user is on either side)
+
+Example:
+
+```bash
+curl "http://127.0.0.1:3000/matches?page=1&page_size=10&user_id=1"
+```
+
+### 5) Sync Players Catalog
+
+- `GET /players/sync`
+- Fetches all players from both universes (`pokemon` and `starwars`) and inserts only records that are not already in the database.
+
+Example:
+
+```bash
+curl "http://127.0.0.1:3000/players/sync"
 ```
 
 ## Run Locally (Lambda + API Gateway)

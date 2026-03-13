@@ -1,0 +1,195 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "infrastructure:GenerateUniverseTeamFunction (python3.12)",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "GenerateUniverseTeamFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "API infrastructure:GenerateUniverseTeamFunction (python3.12)",
+            "invokeTarget": {
+                "target": "api",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "GenerateUniverseTeamFunction"
+            },
+            "api": {
+                "path": "/teams/starwars",
+                "httpMethod": "get",
+                "payload": {
+                    "json": {}
+                }
+            },
+            "lambda": {
+                "runtime": "python3.12"
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "infrastructure:GenerateShowdownFunction (python3.12)",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "GenerateShowdownFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "API infrastructure:GenerateShowdownFunction (python3.12)",
+            "invokeTarget": {
+                "target": "api",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "GenerateShowdownFunction"
+            },
+            "api": {
+                "path": "/showdown",
+                "httpMethod": "post",
+                "headers": {"authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InNhbSIsImlhdCI6MTc3MzM0Nzg1NSwiZXhwIjoxNzczMzUxNDU1fQ.KnvoSMiYTkCKFcKBdOuC2mEkS6sXdmMd8A-3uMGupts"},
+                "payload": {
+                    "json": {
+                        "team_1": 5,
+                        "team_2": 6
+                    }
+                }
+            },
+            "lambda": {
+                "runtime": "python3.12",
+                "environmentVariables": {
+                    "DB_HOST": "postgres",
+                    "DB_PORT": "5432",
+                    "DB_USER": "postgres",
+                    "DB_PASSWORD": "postgres",
+                    "DB_NAME": "super_soccer_showdown"
+                }
+            },
+            "sam": {
+                "dockerNetwork": "super-soccer-showdown_default"
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "API infrastructure:RegisterUserFunction (python3.12)",
+            "invokeTarget": {
+                "target": "api",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "RegisterUserFunction"
+            },
+            "api": {
+                "path": "/users/register",
+                "httpMethod": "post",
+                "payload": {
+                    "json": {"username": "sam"}
+                }
+            },
+            "lambda": {
+                "runtime": "python3.12",
+                "environmentVariables": {
+                    "DB_HOST": "postgres",
+                    "DB_PORT": "5432",
+                    "DB_USER": "postgres",
+                    "DB_PASSWORD": "postgres",
+                    "DB_NAME": "super_soccer_showdown"
+                }
+            },
+            "sam": {
+                "dockerNetwork": "super-soccer-showdown_default"
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "infrastructure:ShowdownQueue (python3.12)",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "ShowdownQueue"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "infrastructure:ProcessShowdownQueueFunction (python3.12)",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "ProcessShowdownQueueFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "API infrastructure:PlayerSyncFunction (python3.12)",
+            "invokeTarget": {
+                "target": "api",
+                "templatePath": "${workspaceFolder}/infrastructure/template.yaml",
+                "logicalId": "PlayerSyncFunction"
+            },
+            "api": {
+                "path": "/players/sync",
+                "httpMethod": "get",
+                "headers": {"authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InNhbSIsImlhdCI6MTc3MzM0Nzg1NSwiZXhwIjoxNzczMzUxNDU1fQ.KnvoSMiYTkCKFcKBdOuC2mEkS6sXdmMd8A-3uMGupts"},
+                "payload": {
+                    "json": {}
+                }
+            },
+            "lambda": {
+                "runtime": "python3.12",
+                "environmentVariables": {
+                    "DB_HOST": "postgres",
+                    "DB_PORT": "5432",
+                    "DB_USER": "postgres",
+                    "DB_PASSWORD": "postgres",
+                    "DB_NAME": "super_soccer_showdown"
+                }
+            },
+            "sam": {
+                "dockerNetwork": "super-soccer-showdown_default"
+            }
+        },
+        {
+            "name": "Attach to SAM 5890",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                "localRoot": "${workspaceFolder}/infrastructure/src",
+                "remoteRoot": "/var/task"
+                }
+            ]
+            }
+    ]
+}

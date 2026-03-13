@@ -14,34 +14,30 @@ def upgrade() -> None:
         "app_user",
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("username", sa.String(length=100), nullable=False),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("username"),
     )
 
     op.create_table(
         "starwars_data",
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("swapi_id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(length=200), nullable=False),
         sa.Column("height_cm", sa.Integer(), nullable=False),
         sa.Column("weight_kg", sa.Float(), nullable=False),
         sa.Column("power", sa.Float(), nullable=True),
-        sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("swapi_id"),
+        sa.PrimaryKeyConstraint("swapi_id"),
     )
 
     op.create_table(
         "pokemon_data",
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("pokeapi_id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(length=200), nullable=False),
         sa.Column("height_cm", sa.Integer(), nullable=False),
         sa.Column("weight_kg", sa.Float(), nullable=False),
         sa.Column("power", sa.Float(), nullable=True),
-        sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("pokeapi_id"),
+        sa.PrimaryKeyConstraint("pokeapi_id"),
     )
 
     op.create_table(
@@ -56,7 +52,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("starwars_team_id", sa.Integer(), nullable=False),
         sa.Column("pokemon_team_id", sa.Integer(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("starwars_user_id", sa.Integer(), nullable=False),
         sa.Column("pokemon_user_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(["pokemon_team_id"], ["soccer_team.id"]),
@@ -72,7 +68,7 @@ def upgrade() -> None:
         sa.Column("team_id", sa.Integer(), nullable=False),
         sa.Column("player_id", sa.Integer(), nullable=False),
         sa.Column("position", sa.Enum("Goalie", "Defence", "Offence", name="positionenum"), nullable=False),
-        sa.ForeignKeyConstraint(["player_id"], ["starwars_data.id"]),
+        sa.ForeignKeyConstraint(["player_id"], ["starwars_data.swapi_id"]),
         sa.ForeignKeyConstraint(["team_id"], ["soccer_team.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -83,7 +79,7 @@ def upgrade() -> None:
         sa.Column("team_id", sa.Integer(), nullable=False),
         sa.Column("player_id", sa.Integer(), nullable=False),
         sa.Column("position", sa.Enum("Goalie", "Defence", "Offence", name="positionenum"), nullable=False),
-        sa.ForeignKeyConstraint(["player_id"], ["pokemon_data.id"]),
+        sa.ForeignKeyConstraint(["player_id"], ["pokemon_data.pokeapi_id"]),
         sa.ForeignKeyConstraint(["team_id"], ["soccer_team.id"]),
         sa.PrimaryKeyConstraint("id"),
     )

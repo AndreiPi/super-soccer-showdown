@@ -9,10 +9,9 @@ from super_soccer_showdown.db.base import Base
 class StarWarsData(Base):
     __tablename__ = "starwars_data"
 
-    id: Mapped[int] = mapped_column(sa.Integer, primary_key=True, autoincrement=True)
-    swapi_id: Mapped[int] = mapped_column(sa.Integer, nullable=False, unique=True)
+    swapi_id: Mapped[int] = mapped_column(sa.Integer, primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(200), nullable=False)
-    height_cm: Mapped[int] = mapped_column(sa.Integer, nullable=False)
+    height_cm: Mapped[float] = mapped_column(sa.Float, nullable=False)
     weight_kg: Mapped[float] = mapped_column(sa.Float, nullable=False)
     power: Mapped[float | None] = mapped_column(sa.Float, nullable=True)
 

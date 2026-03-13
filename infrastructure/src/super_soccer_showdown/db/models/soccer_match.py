@@ -9,6 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from super_soccer_showdown.db.base import Base
 
 if TYPE_CHECKING:
+    from super_soccer_showdown.db.models.showdown_action import ShowdownAction
     from super_soccer_showdown.db.models.soccer_team import SoccerTeam
     from super_soccer_showdown.db.models.user import User
 
@@ -19,7 +20,12 @@ class SoccerMatch(Base):
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True, autoincrement=True)
     starwars_team_id: Mapped[int | None] = mapped_column(sa.Integer, sa.ForeignKey("soccer_team.id"), nullable=False)
     pokemon_team_id: Mapped[int | None] = mapped_column(sa.Integer, sa.ForeignKey("soccer_team.id"), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(sa.DateTime, nullable=False, default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        sa.DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    winner_team_id: Mapped[int | None] = mapped_column(sa.Integer, sa.ForeignKey("soccer_team.id"), nullable=True)
     starwars_user_id: Mapped[int | None] = mapped_column(sa.Integer, sa.ForeignKey("app_user.id"), nullable=False)
     pokemon_user_id: Mapped[int | None] = mapped_column(sa.Integer, sa.ForeignKey("app_user.id"), nullable=False)
 
@@ -42,4 +48,9 @@ class SoccerMatch(Base):
         "SoccerTeam",
         back_populates="as_pokemon_in_matches",
         foreign_keys=[pokemon_team_id],
+    )
+    showdown_actions: Mapped[list["ShowdownAction"]] = relationship(
+        "ShowdownAction",
+        back_populates="soccer_match",
+        cascade="all, delete-orphan",
     )
