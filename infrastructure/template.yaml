@@ -28,7 +28,7 @@ Parameters:
     Default: https://swapi.dev/api/people
   JWTSecretKey:
     Type: String
-    Default: my-secret-key
+    Default: test-secret-key-with-at-least-32-bytes
   DBUser:
     Type: String
     Default: postgres

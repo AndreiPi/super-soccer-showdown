@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "super_soccer_showdown.entrypoints.lambda_api.handlers.generate_universe_team_handler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["GenerateUniverseTeamFunction", "ListTeamsFunction", "GenerateShowdownFunction", "ListMatchesFunction", "PlayerSyncFunction", "RegisterUserFunction", "RefreshJwtTokenFunction"]
+functions = ["GenerateUniverseTeamFunction", "ListTeamsFunction", "GenerateShowdownFunction", "ListMatchesFunction", "PlayerSyncFunction", "RegisterUserFunction", "RefreshJwtTokenFunction", "ApiDocsFunction"]
 
 [layer_build_definitions]

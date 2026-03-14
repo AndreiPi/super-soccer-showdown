@@ -9,7 +9,7 @@ logger = logging.getLogger("super_soccer_showdown.jwt")
 
 
 class JWTConfig:
-    SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "my-secret-key")
+    SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "test-secret-key-with-at-least-32-bytes")
     ALGORITHM = "HS256"
     EXPIRATION_MINUTES = int(os.environ.get("JWT_EXPIRATION_MINUTES", "60"))
 

@@ -17,14 +17,14 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 
 def generate_showdown_handler(event: dict[str, Any], _context: Any) -> dict[str, Any]:
-    return run_handler(_generate_showdown(event))
+    return run_handler(generate_showdown(event))
 
 
 def list_matches_handler(event: dict[str, Any], _context: Any) -> dict[str, Any]:
     return run_handler(_list_matches(event))
 
 
-async def _generate_showdown(event: dict[str, Any]) -> dict[str, Any]:
+async def generate_showdown(event: dict[str, Any]) -> dict[str, Any]:
     logger.info(f"Request to generate_showdown_handler: {event}")
     try:
         get_jwt_payload(event)

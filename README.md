@@ -30,6 +30,7 @@ This project provides a REST API running as AWS Lambda functions (via AWS SAM) t
    - `Name`
    - `Weight` (kg)
    - `Height` (cm)
+   - `Power` -computed from `Weight` and `Height`
 4. Positions are assigned by physical stats:
    - **Goalie** — tallest player
    - **Defence** — heaviest players
@@ -44,7 +45,7 @@ This project provides a REST API running as AWS Lambda functions (via AWS SAM) t
 
 ### Application Architecture
 
-The backend follows a **hexagonal (clean) architecture**. All source code lives under `infrastructure/src/super_soccer_showdown/`.
+The backend follows a **hexagonal architecture**. All source code lives under `infrastructure/src/super_soccer_showdown/`.
 
 ![Application Architecture](docs/diagrams/app-architecture.png)
 
@@ -85,17 +86,12 @@ The application deploys to AWS using:
 - `POST /users/register`
 - **Body:**
   ```json
-  { "username": "ash_ketchum", "password": "pikachu123" }
+  { "username": "ash_ketchum" }
   ```
 
 #### Refresh JWT Token
 
-- `POST /users/token/refresh/{user_id}`
-- **Body:**
-  ```json
-  { "password": "pikachu123" }
-  ```
-
+- `GET /users/token/refresh/{user_id}`
 ---
 
 ### Teams
@@ -136,8 +132,8 @@ curl -X POST "http://127.0.0.1:3000/teams/starwars?defenders=3&attackers=1"
 
 ```json
 {
-  "starwars": { "defenders": 2, "attackers": 2 },
-  "pokemon":  { "defenders": 1, "attackers": 3 }
+  "team_1" : 1,
+  "team_2":  2
 }
 ```
 

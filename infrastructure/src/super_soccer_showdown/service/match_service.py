@@ -13,8 +13,8 @@ from super_soccer_showdown.domain.repositories.soccer_team_repository import Soc
 
 SHOWDOWN_ACTIONS = int(os.environ.get("SHOWDOWN_ACTIONS", 20))
 SHOWDOWN_ATTACK_PROBABILITY = float(os.environ.get("SHOWDOWN_ATTACK_PROBABILITY", 0.5))
-ATTACKER_POWER_MU = float(os.environ.get("ATTACKER_POWER_MU", 2))
-ATTACKER_POWER_SIGMA = float(os.environ.get("ATTACKER_POWER_SIGMA", 0.8))
+ATTACKER_POWER_MU = float(os.environ.get("ATTACKER_POWER_MU", 2.2))
+ATTACKER_POWER_SIGMA = float(os.environ.get("ATTACKER_POWER_SIGMA", 1.5))
 
 class GenerateShowdownUseCase:
     def __init__(self, team_repository: SoccerTeamRepository, match_repository: SoccerMatchRepository) -> None:
