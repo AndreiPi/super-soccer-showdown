@@ -9,12 +9,11 @@ from super_soccer_showdown.domain.repositories.soccer_match_repository import So
 from super_soccer_showdown.domain.repositories.soccer_team_repository import SoccerTeamRepository
 from super_soccer_showdown.adapters.pokeapi_provider import PokeApiPlayerProvider
 from super_soccer_showdown.adapters.swapi_provider import SwapiPlayerProvider
-from super_soccer_showdown.application.refresh_jwt_token_use_case import RefreshJwtTokenUseCase
 from super_soccer_showdown.domain.repositories.user_repository import UserRepository
-from super_soccer_showdown.application.register_user_use_case import RegisterUserUseCase
 from super_soccer_showdown.service.match_service import GenerateShowdownUseCase, ListMatchesUseCase
 from super_soccer_showdown.service.player_service import SyncPlayersCatalogUseCase
 from super_soccer_showdown.service.team_service import GenerateTeamUseCase, ListTeamsUseCase
+from super_soccer_showdown.service.user_service import RefreshJwtTokenUseCase, RegisterUserUseCase
 from super_soccer_showdown.domain.entities import Universe
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 

@@ -1,0 +1,112 @@
+<mxfile host="app.diagrams.net" modified="2026-03-14T00:00:00.000Z" agent="GPT-5.4" version="24.7.17" type="device">
+  <diagram id="app-architecture" name="App Architecture">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="10" value="Super Soccer Showdown&#xa;Minimal Code Architecture" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e7;strokeColor=#b8860b;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="640" y="20" width="520" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="20" value="Entrypoints" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#eef7ff;strokeColor=#1f78b4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="300" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="21" value="lambda_api/handlers&#xa;- user_handlers&#xa;- team_handlers&#xa;- matches_handlers&#xa;- player_handlers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1f78b4;align=left;spacingLeft=8;" vertex="1" parent="20">
+          <mxGeometry x="20" y="50" width="260" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="22" value="lambda_api/bootstrap&#xa;dependency wiring + lifecycle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1f78b4;align=left;spacingLeft=8;" vertex="1" parent="20">
+          <mxGeometry x="20" y="195" width="260" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="23" value="lambda_sqs&#xa;async entrypoint placeholder" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1f78b4;align=left;spacingLeft=8;" vertex="1" parent="20">
+          <mxGeometry x="20" y="275" width="260" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="40" value="Service" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="150" width="300" height="510" as="geometry"/>
+        </mxCell>
+        <mxCell id="41" value="Use cases&#xa;- RegisterUserUseCase&#xa;- RefreshJwtTokenUseCase&#xa;- GenerateTeamUseCase&#xa;- GenerateShowdownUseCase" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" vertex="1" parent="40">
+          <mxGeometry x="20" y="55" width="260" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="42" value="Supporting services&#xa;- jwt_service&#xa;- player_service&#xa;- team_service&#xa;- match_service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" vertex="1" parent="40">
+          <mxGeometry x="20" y="185" width="260" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="43" value="service/exceptions&#xa;domain-specific errors" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" vertex="1" parent="40">
+          <mxGeometry x="20" y="315" width="260" height="55" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="50" value="Domain" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#e8f5e9;strokeColor=#2e7d32;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="150" width="410" height="510" as="geometry"/>
+        </mxCell>
+        <mxCell id="51" value="entities.py&#xa;- Universe&#xa;- Position&#xa;- Lineup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" vertex="1" parent="50">
+          <mxGeometry x="20" y="50" width="170" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="52" value="persistence/&#xa;- user&#xa;- player_data&#xa;- soccer_team&#xa;- soccer_match&#xa;- showdown_action" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" vertex="1" parent="50">
+          <mxGeometry x="210" y="50" width="180" height="145" as="geometry"/>
+        </mxCell>
+        <mxCell id="53" value="repositories/&#xa;- user_repository&#xa;- player_repository&#xa;- soccer_team_repository&#xa;- soccer_match_repository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" vertex="1" parent="50">
+          <mxGeometry x="20" y="180" width="370" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="54" value="Core responsibility&#xa;business types + mapping + data access contracts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" vertex="1" parent="50">
+          <mxGeometry x="20" y="335" width="370" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="60" value="Adapters" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fff3e0;strokeColor=#ef6c00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="150" width="300" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="61" value="pokeapi_provider.py&#xa;PokeApiPlayerProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;align=left;spacingLeft=8;" vertex="1" parent="60">
+          <mxGeometry x="20" y="55" width="260" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="62" value="swapi_provider.py&#xa;SwapiPlayerProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;align=left;spacingLeft=8;" vertex="1" parent="60">
+          <mxGeometry x="20" y="125" width="260" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="70" value="Persistence / DB" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="450" width="300" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="71" value="db/base.py&#xa;SQLAlchemy base" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;spacingLeft=8;" vertex="1" parent="70">
+          <mxGeometry x="20" y="55" width="260" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="72" value="db/models/&#xa;- user&#xa;- soccer_team&#xa;- soccer_match&#xa;- showdown_action&#xa;- pokemon_data / starwars_data&#xa;- team_composition + enums" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;spacingLeft=8;" vertex="1" parent="70">
+          <mxGeometry x="20" y="120" width="260" height="130" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="80" value="External APIs" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fce4ec;strokeColor=#ad1457;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="150" width="220" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="81" value="PokeAPI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;" vertex="1" parent="80">
+          <mxGeometry x="20" y="60" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="82" value="SWAPI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;" vertex="1" parent="80">
+          <mxGeometry x="20" y="130" width="180" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="90" value="Main dependency flow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="810" y="720" width="410" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="91" value="Entrypoints call service-layer use cases.&#xa;Services use domain contracts and external adapters.&#xa;Repositories map domain objects to SQLAlchemy models." style="text;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=6;" vertex="1" parent="90">
+          <mxGeometry x="10" y="10" width="390" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="101" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" source="20" target="40" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="103" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" source="40" target="50" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="104" value="player providers" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;endFill=1;" edge="1" source="40" target="60" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="105" value="ORM + tables" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" edge="1" source="50" target="70" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="106" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;endFill=1;" edge="1" source="61" target="81" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="107" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;endFill=1;" edge="1" source="62" target="82" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

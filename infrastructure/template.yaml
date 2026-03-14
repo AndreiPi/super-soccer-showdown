@@ -130,4 +130,21 @@ Resources:
             Path: /users/token/refresh/{user_id}
             Method: get
 
+  ApiDocsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.docs_handlers.docs_handler
+      CodeUri: src/
+      Events:
+        GetSwaggerUi:
+          Type: Api
+          Properties:
+            Path: /docs
+            Method: get
+        GetOpenApiSpec:
+          Type: Api
+          Properties:
+            Path: /openapi.json
+            Method: get
+
 

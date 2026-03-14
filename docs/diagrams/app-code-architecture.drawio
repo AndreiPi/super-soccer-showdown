@@ -1,0 +1,93 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 OPR/127.0.0.0" version="29.6.1">
+  <diagram id="app-architecture" name="App Architecture">
+    <mxGraphModel dx="2064" dy="1104" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e7;strokeColor=#b8860b;fontStyle=1;fontSize=18;" value="Super Soccer Showdown&lt;br&gt;Code Architecture" vertex="1">
+          <mxGeometry height="70" width="520" x="640" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#eef7ff;strokeColor=#1f78b4;fontStyle=1;" value="Entrypoints" vertex="1">
+          <mxGeometry height="320" width="270" x="90" y="225" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="20" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1f78b4;align=left;spacingLeft=8;" value="lambda_api/handlers&#xa;- user_handlers&#xa;- team_handlers&#xa;- matches_handlers&#xa;- player_handlers" vertex="1">
+          <mxGeometry height="130" width="165" x="67.5" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="22" parent="20" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1f78b4;align=left;spacingLeft=8;" value="lambda_api/bootstrap&#xa;dependency wiring + lifecycle" vertex="1">
+          <mxGeometry height="70" width="190" x="60" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="SdqsT8EDTsNUScKmvgk4-108" edge="1" parent="1" source="40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="60">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="585" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="40" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" value="Service" vertex="1">
+          <mxGeometry height="390" width="350" x="410" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="40" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" value="Use cases&#xa;- RegisterUserUseCase&#xa;- RefreshJwtTokenUseCase&#xa;- GenerateTeamUseCase&#xa;- GenerateShowdownUseCase" vertex="1">
+          <mxGeometry height="110" width="260" x="60" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="40" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" value="Supporting services&#xa;- jwt_service&#xa;- player_service&#xa;- team_service&#xa;- match_service" vertex="1">
+          <mxGeometry height="110" width="260" x="60" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="40" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;align=left;spacingLeft=8;" value="service/exceptions&#xa;domain-specific errors" vertex="1">
+          <mxGeometry height="55" width="260" x="60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#e8f5e9;strokeColor=#2e7d32;fontStyle=1;" value="Domain" vertex="1">
+          <mxGeometry height="400" width="410" x="810" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="50" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" value="Entities&lt;br&gt;- Universe&lt;br&gt;- Position&lt;br&gt;- Lineup" vertex="1">
+          <mxGeometry height="95" width="130" x="50" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="52" parent="50" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" value="persistence/&#xa;- user&#xa;- player_data&#xa;- soccer_team&#xa;- soccer_match&#xa;- showdown_action" vertex="1">
+          <mxGeometry height="145" width="140" x="210" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="53" parent="50" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2e7d32;align=left;spacingLeft=8;" value="repositories/&#xa;- user_repository&#xa;- player_repository&#xa;- soccer_team_repository&#xa;- soccer_match_repository" vertex="1">
+          <mxGeometry height="120" width="260" x="80" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="60" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fff3e0;strokeColor=#ef6c00;fontStyle=1;" value="Adapters" vertex="1">
+          <mxGeometry height="240" width="300" x="435" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="61" parent="60" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;align=left;spacingLeft=8;" value="pokeapi_provider.py&#xa;PokeApiPlayerProvider" vertex="1">
+          <mxGeometry height="60" width="190" x="50" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="62" parent="60" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;align=left;spacingLeft=8;" value="swapi_provider.py&#xa;SwapiPlayerProvider" vertex="1">
+          <mxGeometry height="60" width="210" x="40" y="125" as="geometry" />
+        </mxCell>
+        <mxCell id="70" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;" value="Persistence / DB" vertex="1">
+          <mxGeometry height="300" width="300" x="1310" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="71" parent="70" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;spacingLeft=8;" value="db/base.py&#xa;SQLAlchemy base" vertex="1">
+          <mxGeometry height="50" width="200" x="50" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="72" parent="70" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;spacingLeft=8;" value="db/models/&#xa;- user&#xa;- soccer_team&#xa;- soccer_match&#xa;- showdown_action&#xa;- pokemon_data / starwars_data&#xa;- team_composition + enums" vertex="1">
+          <mxGeometry height="130" width="200" x="50" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="80" parent="1" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=28;fillColor=#fce4ec;strokeColor=#ad1457;fontStyle=1;" value="External APIs" vertex="1">
+          <mxGeometry height="240" width="220" x="810" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="81" parent="80" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;" value="PokeAPI" vertex="1">
+          <mxGeometry height="50" width="150" x="50" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="82" parent="80" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;" value="SWAPI" vertex="1">
+          <mxGeometry height="50" width="150" x="50" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="101" edge="1" parent="1" source="20" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="103" edge="1" parent="1" source="40" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="105" edge="1" parent="1" source="50" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;" target="70" value="ORM + tables">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="106" edge="1" parent="1" source="61" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;endFill=1;" target="81">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="107" edge="1" parent="1" source="62" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=block;endFill=1;" target="82">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

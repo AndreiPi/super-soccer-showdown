@@ -10,7 +10,7 @@ from super_soccer_showdown.domain.persistence.soccer_match import DomainSoccerMa
 from super_soccer_showdown.domain.persistence.soccer_team import DomainSoccerTeam
 from super_soccer_showdown.domain.persistence.team_composition import DomainTeamComposition
 from super_soccer_showdown.service.jwt_service import generate_token
-from super_soccer_showdown.entrypoints.lambda_api.handlers import matches_handlers, team_handlers, user_handlers
+from super_soccer_showdown.entrypoints.lambda_api.handlers import docs_handlers, matches_handlers, team_handlers, user_handlers
 
 
 def make_auth_headers(user_id: int = 1, username: str = "ash") -> dict[str, str]:
@@ -225,3 +225,25 @@ class TestEndpointsE2E:
         assert body["user_id"] == "9"
         assert body["username"] == "leia"
         assert body["jwt_token"] == "fresh-token"
+
+    def test_docs_endpoint_returns_swagger_ui_html(self):
+        response = docs_handlers.docs_handler({"path": "/docs"}, None)
+
+        assert response["statusCode"] == 200
+        assert response["headers"]["Content-Type"] == "text/html; charset=utf-8"
+        assert "SwaggerUIBundle" in response["body"]
+        assert "openapi.json" in response["body"]
+
+    def test_openapi_endpoint_returns_spec_with_expected_paths(self):
+        event = {"path": "/openapi.json", "requestContext": {"stage": "Prod"}}
+
+        response = docs_handlers.docs_handler(event, None)
+        body = parse_body(response)
+
+        assert response["statusCode"] == 200
+        assert response["headers"]["Content-Type"] == "application/json"
+        assert body["openapi"] == "3.0.3"
+        assert body["servers"][0]["url"] == "/Prod"
+        assert "/teams/{universe}" in body["paths"]
+        assert "/users/register" in body["paths"]
+        assert "/showdown" in body["paths"]
