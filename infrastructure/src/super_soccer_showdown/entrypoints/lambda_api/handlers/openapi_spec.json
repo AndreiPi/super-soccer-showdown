@@ -128,14 +128,19 @@
         }
       }
     },
-    "/users/token/refresh/{user_id}": {
+    "/users/token/refresh": {
       "get": {
         "summary": "Refresh JWT token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "user_id",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "integer"
             }

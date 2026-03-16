@@ -13,20 +13,23 @@ from super_soccer_showdown.domain.repositories.soccer_team_repository import Soc
 
 SHOWDOWN_ACTIONS = int(os.environ.get("SHOWDOWN_ACTIONS", 20))
 SHOWDOWN_ATTACK_PROBABILITY = float(os.environ.get("SHOWDOWN_ATTACK_PROBABILITY", 0.5))
-ATTACKER_POWER_MU = float(os.environ.get("ATTACKER_POWER_MU", 2.2))
-ATTACKER_POWER_SIGMA = float(os.environ.get("ATTACKER_POWER_SIGMA", 1.5))
+ATTACKER_POWER_MU = float(os.environ.get("ATTACKER_POWER_MU", 5))
+ATTACKER_POWER_SIGMA = float(os.environ.get("ATTACKER_POWER_SIGMA", 2.5))
 
 class GenerateShowdownUseCase:
     def __init__(self, team_repository: SoccerTeamRepository, match_repository: SoccerMatchRepository) -> None:
         self._team_repository = team_repository
         self._match_repository = match_repository
 
-    async def execute(self, team_1_id: int, team_2_id: int) -> DomainSoccerMatch:
+    async def execute(self, team_1_id: int, team_2_id: int, user_id: int) -> DomainSoccerMatch:
         team_1 = await self._team_repository.get_team_by_id(team_1_id)
         team_2 = await self._team_repository.get_team_by_id(team_2_id)
 
         if team_1 is None or team_2 is None:
             raise ValueError("One or both team IDs do not exist.")
+        
+        if team_1.owner_user_id != user_id and team_2.owner_user_id != user_id:
+            raise ValueError("User must own at least one of the teams to initiate a showdown.")
         
         starwars_team, pokemon_team = get_teams_by_universe(team_1, team_2)
 

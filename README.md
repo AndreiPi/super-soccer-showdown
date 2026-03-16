@@ -91,7 +91,8 @@ The application deploys to AWS using:
 
 #### Refresh JWT Token
 
-- `GET /users/token/refresh/{user_id}`
+- `GET /users/token/refresh`
+- `GET /users/token/refresh?user_id=4`
 ---
 
 ### Teams

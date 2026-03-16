@@ -139,7 +139,7 @@ class SwapiPlayerProvider(PlayerProvider):
         if source_id <= 0 or weight_kg <= 0 or height_cm <= 0:
             return None
 
-        power = round(height_cm * weight_kg * max(num_vehicles, 1) / 100.0, 2)
+        power = round((height_cm + weight_kg) * max(num_vehicles, 1) / 100.0, 2)
 
         return DomainPlayerData(
             source_id=source_id,

@@ -21,8 +21,11 @@ def to_jsonable(payload: Any) -> Any:
     return JSON_ADAPTER.dump_python(payload, mode="json", fallback=_pydantic_fallback)
 
 def lineup_from_payload(payload: dict[str, Any]) -> Lineup:
-    defenders = int(payload.get("defenders", 0))
-    attackers = int(payload.get("attackers", 0))
+    try:
+        defenders = int(payload.get("defenders", 0))
+        attackers = int(payload.get("attackers", 0))
+    except (TypeError, ValueError):
+        raise ValueError("Defenders and attackers must be integers.")
     if attackers + defenders == 0:
         attackers = (TEAM_SIZE - 1) // 2
         defenders = TEAM_SIZE - 1 - attackers
@@ -30,9 +33,12 @@ def lineup_from_payload(payload: dict[str, Any]) -> Lineup:
         attackers = TEAM_SIZE - 1 - defenders
     elif defenders == 0:
         defenders = TEAM_SIZE - 1 - attackers
+    
 
     if defenders + attackers + 1 > TEAM_SIZE:
         raise ValueError("Lineup exceeds team size limit.")
+    if attackers + defenders < TEAM_SIZE - 1:
+        raise ValueError("Lineup must fill all available positions.")
     if attackers < 1:
         raise ValueError("Lineup must have at least one attacker.")
     if defenders < 1:

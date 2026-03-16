@@ -13,17 +13,17 @@ class JWTConfig:
     ALGORITHM = "HS256"
     EXPIRATION_MINUTES = int(os.environ.get("JWT_EXPIRATION_MINUTES", "60"))
 
-def get_jwt_payload(event: dict) -> dict:
+def get_jwt_payload(event: dict, verify_exp: bool = True) -> dict:
     headers = event.get("headers", {})
     auth_header = headers.get("Authorization") or headers.get("authorization")
+    logger.info(f"Extracted Authorization header: {auth_header}")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise ValueError("Missing or invalid Authorization header")
     token = auth_header.split(" ", 1)[1]
-    return decode_token(token)
+    return decode_token(token, verify=verify_exp)
 
 
 def generate_token(user_id: int, username: str) -> str:
-    """Generate JWT token for authenticated user."""
     payload = {
         "user_id": user_id,
         "username": username,
@@ -35,10 +35,9 @@ def generate_token(user_id: int, username: str) -> str:
     return token
 
 
-def decode_token(token: str) -> dict:
-    """Decode and verify JWT token."""
+def decode_token(token: str, verify = True) -> dict:
     try:
-        payload = jwt.decode(token, JWTConfig.SECRET_KEY, algorithms=[JWTConfig.ALGORITHM])
+        payload = jwt.decode(token, JWTConfig.SECRET_KEY, algorithms=[JWTConfig.ALGORITHM], options={"verify_exp": verify})
         logger.info(f"Decoded JWT payload: {payload}")
         return payload
     except jwt.ExpiredSignatureError:

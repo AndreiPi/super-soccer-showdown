@@ -21,13 +21,16 @@ def generate_showdown_handler(event: dict[str, Any], _context: Any) -> dict[str,
 
 
 def list_matches_handler(event: dict[str, Any], _context: Any) -> dict[str, Any]:
-    return run_handler(_list_matches(event))
+    return run_handler(list_matches(event))
 
 
 async def generate_showdown(event: dict[str, Any]) -> dict[str, Any]:
     logger.info(f"Request to generate_showdown_handler: {event}")
     try:
-        get_jwt_payload(event)
+        jwt_payload = get_jwt_payload(event)
+        user_id = jwt_payload.get("user_id")
+        if user_id is None:
+            return response(401, {"message": "Unauthorized: Invalid user"})
     except Exception as auth_error:
         logger.error(f"Unauthorized access: {auth_error}")
         return response(401, {"message": "Unauthorized: " + str(auth_error)})
@@ -35,16 +38,19 @@ async def generate_showdown(event: dict[str, Any]) -> dict[str, Any]:
     try:
         body = load_json_body(event)
 
-        team_1_id = body.get("team_1", None)
-        team_2_id = body.get("team_2", None)
-        if team_1_id is None or team_2_id is None:
-            return response(400, {"message": "Both team_1 and team_2 must be provided in the request body."})
-        
+        try:
+            team_1_id = int(body.get("team_1", None))
+            team_2_id = int(body.get("team_2", None))
+            if team_1_id is None or team_2_id is None:
+                return response(400, {"message": "Both team_1 and team_2 must be provided in the request body."})
+        except (TypeError, ValueError):
+            return response(400, {"message": "Both team_1 and team_2 must be valid integers in the request body."})
 
         generate_showdown_use_case = build_generate_showdown_use_case()
         showdown = await generate_showdown_use_case.execute(
             team_1_id=team_1_id,
             team_2_id=team_2_id,
+            user_id=user_id,
         )
         return response(201, showdown)
     except json.JSONDecodeError:
@@ -58,7 +64,7 @@ async def generate_showdown(event: dict[str, Any]) -> dict[str, Any]:
         return response(500, {"message": "Unexpected server error."})
 
 
-async def _list_matches(event: dict[str, Any]) -> dict[str, Any]:
+async def list_matches(event: dict[str, Any]) -> dict[str, Any]:
     logger.info(f"Request to list_matches_handler: {event}")
     try:
         get_jwt_payload(event)
@@ -75,6 +81,11 @@ async def _list_matches(event: dict[str, Any]) -> dict[str, Any]:
         user_id_raw = query.get("user_id")
         if user_id_raw not in (None, ""):
             user_id = int(user_id_raw)
+
+        if page_size > 100 or page_size < 1:
+            return response(400, {"message": "Query parameter 'page_size' must be between 1 and 100."})
+        if page < 1:
+            return response(400, {"message": "Query parameter 'page' must be greater than or equal to 1."})
 
         list_matches_use_case = build_list_matches_use_case()
         payload = await list_matches_use_case.execute(page=page, page_size=page_size, user_id=user_id)

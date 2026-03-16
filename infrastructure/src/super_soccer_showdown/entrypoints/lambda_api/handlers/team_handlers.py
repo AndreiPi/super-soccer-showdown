@@ -65,6 +65,11 @@ async def list_teams(event: dict[str, Any]) -> dict[str, Any]:
         universe_raw = query.get("universe")
         user_id_raw = query.get("user_id")
 
+        if page_size > 100 or page_size < 1:
+            return response(400, {"message": "Query parameter 'page_size' must be between 1 and 100."})
+        if page < 1:
+            return response(400, {"message": "Query parameter 'page' must be greater than or equal to 1."})
+
         universe = None
         if universe_raw not in (None, ""):
             universe = Universe(str(universe_raw).lower())

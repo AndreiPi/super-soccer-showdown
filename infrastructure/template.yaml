@@ -124,10 +124,10 @@ Resources:
       Handler: super_soccer_showdown.entrypoints.lambda_api.handlers.user_handlers.refresh_jwt_token_handler
       CodeUri: src/
       Events:
-        GetRefreshToken:
+        GetRefreshTokenWithoutPathParam:
           Type: Api
           Properties:
-            Path: /users/token/refresh/{user_id}
+            Path: /users/token/refresh
             Method: get
 
   ApiDocsFunction:

@@ -54,15 +54,17 @@ async def register_user_async(event: dict[str, Any]) -> dict[str, Any]:
 async def refresh_jwt_token_async(event: dict[str, Any]) -> dict[str, Any]:
     logger.info(f"Request to refresh_jwt_token_handler: {event}")
     try:
-        user_id = event.get("pathParameters", {}).get("user_id")
-        if user_id in (None, ""):
-            jwt_payload = get_jwt_payload(event)
+        user_id = (event.get("queryStringParameters", {}) or {}).get("user_id")
+        logger.info(f"Extracted user_id from query parameters: {user_id}")
+        if user_id in (None, "") or not user_id.isnumeric():
+            jwt_payload = get_jwt_payload(event, verify_exp=False)
             user_id = jwt_payload.get("user_id")
+            logger.info(f"Extracted user_id from JWT payload: {user_id}")
 
         try:
             user_id = int(user_id)
         except (TypeError, ValueError):
-            return response(400, {"message": "Path parameter 'user_id' must be an integer."})
+            return response(400, {"message": "Query parameter 'user_id' must be an integer."})
         
 
 
