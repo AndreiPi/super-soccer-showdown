@@ -27,9 +27,7 @@ class SoccerTeam(Base):
         nullable=False,
     )
     owner_user_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey("app_user.id"), nullable=False)
-
     owner_user: Mapped["User"] = relationship("User", back_populates="soccer_teams")
-
     starwars_players: Mapped[list["StarWarsTeamComposition"]] = relationship(
         "StarWarsTeamComposition",
         back_populates="team",

@@ -148,14 +148,12 @@ def build_list_matches_use_case() -> ListMatchesUseCase:
 
 
 def build_register_user_use_case() -> RegisterUserUseCase:
-    """Build use case for user registration with database session."""
     db_session = get_db_session()
     user_repository = UserRepository(db_session)
     return RegisterUserUseCase(user_repository)
 
 
 def build_refresh_jwt_token_use_case() -> RefreshJwtTokenUseCase:
-    """Build use case for refreshing JWT token of an existing user."""
     db_session = get_db_session()
     user_repository = UserRepository(db_session)
     return RefreshJwtTokenUseCase(user_repository)
